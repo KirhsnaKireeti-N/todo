@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
 
             color = colorcode & TASK_IMPORTANT ? ANSI_COLOR_GREEN : color;
             color = colorcode & TASK_URGENT ? ANSI_COLOR_RED : color;
-            color = (colorcode & TASK_IMPORTANT) && (colorcode & TASK_URGENT) ? ANSI_COLOR_RED_UL : color;
+            color = (colorcode & TASK_IMPORTANT) && (colorcode & TASK_URGENT) ? ANSI_COLOR_RED_BG : color;
             printf("%s%d: %s" ANSI_COLOR_RESET "\n", color, i + 1, todolist[i].strtask);
         }
     }
@@ -43,13 +43,15 @@ int main(int argc, char *argv[]) {
         char c;
 
         printf("Important[y]? ");
-        scanf("%c", &c);
+        if (scanf("%c", &c) != 1)
+            printf("Input 'y' for yes and any other character for no");
         while (fgetc(stdin) != '\n')
             ;
         metadata |= (c == 'y' ? TASK_IMPORTANT : metadata);
 
         printf("Urgent[y]? ");
-        scanf("%c", &c);
+        if (scanf("%c", &c) != 1)
+            printf("Input 'y' for yes and any other character for no");
         while (fgetc(stdin) != '\n')
             ;
         metadata |= (c == 'y' ? TASK_URGENT : metadata);

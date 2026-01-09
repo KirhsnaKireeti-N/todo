@@ -70,7 +70,6 @@ void task_add(const char *file, char *strtask, int strtasklen, unsigned char met
 }
 
 void task_remove(const char *file, int i) {
-    struct task *todolist;
     int n = load(file, &todolist);
 
     memmove(todolist + i - 1, todolist + i, ((n - 1) - i + 1) * (sizeof(struct task)));

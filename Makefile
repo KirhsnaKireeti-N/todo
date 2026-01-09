@@ -1,18 +1,25 @@
-files := main.c data.c
+src := $(wildcard src/*.c)
 output := bin/todo
 
-all: compile clean run
+all: debug clean run
 
-compile: libcsv
+bin:
 	@mkdir -p bin
-	@$(CC) -std=c2x -Iinclude ${files} -L. -lcsv -o ${output}
 
-libcsv:
-	@$(CC) -c libcsv.c -o libcsv.o -Iinclude
-	@$(AR) rcs libcsv.a libcsv.o
+# ------------------------------------------------------------------
+compileflags := -std=c2x -Iinclude ${src} -o ${output}
+
+debugflags := -O0 -Wall -Wshadow -Werror
+debug: bin
+	@${CC} ${compileflags} ${debugflags}
+
+releaseflags = -O2
+release: bin
+	@$(CC) ${compileflags} ${releaseflags}
+#-------------------------------------------------------------------
 
 clean:
-	@rm libcsv.o libcsv.a
+	@rm -rf bin
 
 run:
 	./${output}
